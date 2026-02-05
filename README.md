@@ -53,6 +53,23 @@ telescope.extensions.jj.diff(opts) -- list files with differences (like jj statu
 telescope.extensions.jj.files(opts) -- list all files in repo
 ```
 
+### Diff Picker Options
+
+The `diff` picker supports viewing changes for specific revisions:
+
+```lua
+-- View working copy changes (default behavior)
+telescope.extensions.jj.diff()
+
+-- View changes in a specific revision
+telescope.extensions.jj.diff({ revision = "@-" })  -- previous commit
+telescope.extensions.jj.diff({ revision = "main" })
+
+-- View changes between two revisions
+telescope.extensions.jj.diff({ from = "main", to = "@" })
+telescope.extensions.jj.diff({ from = "@--", to = "@-" })
+```
+
 ### Git fallback
 
 The example below includes a fallback to the default `git_files` picker if the `jj` picker fails.

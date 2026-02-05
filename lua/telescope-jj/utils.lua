@@ -45,7 +45,22 @@ local diff_previwer = defaulter(function(opts)
         end,
 
         define_preview = function(self, entry)
-            local diff_cmd = { "jj", "diff", "--git", "--no-pager", "--", entry.value }
+            local diff_cmd = { "jj", "diff", "--git", "--no-pager" }
+            if opts.revision then
+                table.insert(diff_cmd, "-r")
+                table.insert(diff_cmd, opts.revision)
+            elseif opts.from or opts.to then
+                if opts.from then
+                    table.insert(diff_cmd, "--from")
+                    table.insert(diff_cmd, opts.from)
+                end
+                if opts.to then
+                    table.insert(diff_cmd, "--to")
+                    table.insert(diff_cmd, opts.to)
+                end
+            end
+            table.insert(diff_cmd, "--")
+            table.insert(diff_cmd, entry.value)
             putils.job_maker(diff_cmd, self.state.bufnr, {
                 value = entry.value,
                 bufname = self.state.bufname,
